@@ -11,7 +11,7 @@
 class Automate {
 
 private: 
-	char* symboles;
+	char* listeSymboles;
 public: 
     bool estAsynchrone;
     bool estDeterministe;

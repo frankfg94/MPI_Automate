@@ -180,22 +180,39 @@ Automate::Automate(std::string texte)
 				std::cout << "Etat f   : " << listeTransitions[i].etatDepart.numero << std::endl;
 				std::cout << "Correspondance trouvee entre etat " << listeEtats[j].numero << " et " << listeTransitions[i].etatDepart.numero << std::endl;
 				listeEtats[j].transitions[i] = listeTransitions[i];
+
+				// allocation dynamique
+			
 			};
 		}
+		
 	}
+
+
+	char* preListe = new char[nbTransitions];
+	// on rajoute tous les symboles
+	for (int k = 0; k < nbTransitions; k++)
+	{
+		preListe[k] = listeTransitions[k].symbole;
+		std::cout << k << ":" << preListe[k] << std::endl;
+	}
+
+	// On enlève les valeurs excessives et on les stocke dans la liste des Symboles
+
+
 	// Table de transitions
 	std::cout << "--ETAT |";
 	GetSymboles();
 	for (int i = 0; i < nbSymboles; i++)
 	{
-		std::cout << " " << symboles[i] << " ";
+		std::cout << " " << listeSymboles[i] << " ";
 	}
 	std::cout << "--" << listeEtats[0].transitions[0].etatFinal.numero << "----------" << std::endl;
 }
 
 char * Automate::GetSymboles()
 {
-	symboles = new char[nbSymboles];
+	listeSymboles = new char[nbSymboles];
 	int j = 0;
 	std::cout << "--------- GetSymboles() ----------" << std::endl;
 	for (int i = 0; i < nbTransitions; i++)
@@ -203,12 +220,12 @@ char * Automate::GetSymboles()
 			char symbActuel = listeTransitions[0].symbole;
 			if (listeTransitions[i].symbole != symbActuel)
 			{
-				symboles[j] = listeTransitions[i].symbole;
-				symbActuel = symboles[j];				
+				listeSymboles[j] = listeTransitions[i].symbole;
+				symbActuel = listeSymboles[j];				
 				std::cout << listeTransitions[i].symbole << std::endl;
 			}
 	}
-	return symboles;
+	return listeSymboles;
 }
 
 void Automate::Minimiser() {
