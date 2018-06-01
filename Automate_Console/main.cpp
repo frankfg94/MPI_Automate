@@ -36,8 +36,10 @@ void ChargerFichier(string nom)
 			return;
 		}
 		string line;
+		cout << " \n-- Tentative chargement :" << nom << ".txt" <<"  -- \n" << endl;
 		while (getline(myfile, line))
 		{
+
 			cout << line << '\n';
 			loadedText += (line + "\n");
 		}
@@ -45,7 +47,7 @@ void ChargerFichier(string nom)
 
 		// on vérifie si le fichier n'est pas vide
 
-			cout << "Chargement OK\n" << endl;
+			cout << "\n --	Chargement OK	  -- \n" << endl;
 	}
 	else cout << "Impossible d'ouvrir le fichier\n" << endl;
 }
