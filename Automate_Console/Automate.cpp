@@ -182,24 +182,13 @@ Automate::Automate(std::string texte)
 				listeEtats[j].transitions[i] = listeTransitions[i];
 
 				// allocation dynamique
-			
 			};
 		}
 		
 	}
 
-
-	char* preListe = new char[nbTransitions];
-	// on rajoute tous les symboles
-	for (int k = 0; k < nbTransitions; k++)
-	{
-		preListe[k] = listeTransitions[k].symbole;
-		std::cout << k << ":" << preListe[k] << std::endl;
-	}
-
-	// On enlève les valeurs excessives et on les stocke dans la liste des Symboles
-
-
+	AfficherSymboles();
+	
 	// Table de transitions
 	std::cout << "--ETAT |";
 	GetSymboles();
@@ -208,6 +197,44 @@ Automate::Automate(std::string texte)
 		std::cout << " " << listeSymboles[i] << " ";
 	}
 	std::cout << "--" << listeEtats[0].transitions[0].etatFinal.numero << "----------" << std::endl;
+}
+
+
+void Automate::AfficherSymboles()
+{	
+	char* preListe = new char[ nbTransitions];
+	// on rajoute tous les symboles
+	for (int k = 0; k < nbTransitions; k++)
+	{
+		preListe[k] = listeTransitions[k].symbole;
+	}
+
+	// On enlève les valeurs excessives et on les stocke dans la liste des Symboles
+	listeSymboles = new char[nbSymboles];
+
+	char dernierCaractereDifferent = preListe[0];
+	int posSymboleListe = 0;
+
+	for (int k = 0; k < nbTransitions; k++)
+	{
+		// on ignore la reconnaissance des transitions epsilon
+		if (dernierCaractereDifferent != preListe[k] && dernierCaractereDifferent != '*')
+		{
+			dernierCaractereDifferent = preListe[k];
+			listeSymboles[posSymboleListe] = dernierCaractereDifferent;
+
+			// on a trouvé un caractère différent et on l'a placé dans le tableau, on incrémente donc le tableau des différents caractères pour passer à la case suivante
+			posSymboleListe++;
+		}
+
+	}
+
+	std::cout << " --- Liste des symboles ---" << std::endl;
+	for (int l = 0; l < nbSymboles; l++)
+	{
+		std::cout << l << " : " << listeSymboles[l] << std::endl;
+	}
+	std::cout << " ------------------------" << std::endl;;
 }
 
 char * Automate::GetSymboles()

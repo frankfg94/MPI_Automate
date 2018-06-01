@@ -12,19 +12,23 @@ class Automate {
 
 private: 
 	char* listeSymboles;
-public: 
-    bool estAsynchrone;
-    bool estDeterministe;
-    bool estComplet;
-    int nbEtats;
-    int nbSymboles;
+	bool estAsynchrone;
+	bool estDeterministe;
+	bool estComplet;
+	int nbEtats;
+	int nbSymboles;
 	int nbEtatsInitiaux;
 	int nbEtatsFinaux;
 	Etat* listeEtats;
-    Transition* listeTransitions;
-    int nbTransitions;
-    
+	Transition* listeTransitions;
+	int nbTransitions;
+
+public: 
+
+
 	Automate(std::string texte);
+
+	void AfficherSymboles();
 
 	char* GetSymboles();
 
