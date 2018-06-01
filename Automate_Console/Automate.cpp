@@ -175,8 +175,9 @@ Automate::Automate(std::string texte)
 
 			if (listeEtats[j].numero == listeTransitions[i].etatDepart.numero)
 			{
-				std::cout << "STEP 1 : " << listeEtats[j].numero << std::endl;
-				std::cout << "STEP 2 : " << listeTransitions[i].etatDepart.numero << std::endl;
+				std::cout << "Etat i   : " << listeEtats[j].numero << std::endl;
+				std::cout << "Symbole  : " << listeTransitions[i].symbole << std::endl;
+				std::cout << "Etat f   : " << listeTransitions[i].etatDepart.numero << std::endl;
 				std::cout << "Correspondance trouvee entre etat " << listeEtats[j].numero << " et " << listeTransitions[i].etatDepart.numero << std::endl;
 				listeEtats[j].transitions[i] = listeTransitions[i];
 			};
