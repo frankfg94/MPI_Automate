@@ -154,29 +154,7 @@ Automate::Automate(std::string texte)
 				
 			}
 		}
-		for (int j = 0; j < nbEtats; j++)
-		{
-		}
-		for (int j = 0; j < nbEtats; j++)
-		{
-			// pour chaque etat on genere un nombre de transitions
-			std::cout << "Etat : "<< listeEtats[j].numero << std::endl;
-			for (int i = 0; i < nbTransitions; i++)
-			{
-				this->listeEtats[j].transitions = new Transition[nbTransitions];
-				// on parcoure toutes les transitions a disposition
-				// on regarde si une des transitions commence par l'état
-				// ici si le numero de l'état est égal au numero de la transition de de(part
-
-				if (listeEtats[j].numero == listeTransitions[i].etatDepart.numero)
-				{
-					std::cout << "STEP 1 : " << listeEtats[j].numero << std::endl;
-					std::cout << "STEP 2 : " << listeTransitions[i].etatDepart.numero << std::endl;
-					std::cout << "Correspondance trouvee entre etat " << listeEtats[j].numero << " et " << listeTransitions[i].etatDepart.numero << std::endl;
-					listeEtats[j].transitions[i] = listeTransitions[i];
-				};
-			}
-		}
+		
 
 
 		// on indique ensuite les etats qui sont initiaux et finaux
@@ -184,7 +162,26 @@ Automate::Automate(std::string texte)
 	}
 	std::cout << "\nAutomate cree avec succes !" << std::endl;
 
+	for (int j = 0; j < nbEtats; j++)
+	{
+		// pour chaque etat on genere un nombre de transitions
+		std::cout << "Etat : " << listeEtats[j].numero << std::endl;
+		for (int i = 0; i < nbTransitions; i++)
+		{
+			this->listeEtats[j].transitions = new Transition[nbTransitions];
+			// on parcoure toutes les transitions a disposition
+			// on regarde si une des transitions commence par l'état
+			// ici si le numero de l'état est égal au numero de la transition de de(part
 
+			if (listeEtats[j].numero == listeTransitions[i].etatDepart.numero)
+			{
+				std::cout << "STEP 1 : " << listeEtats[j].numero << std::endl;
+				std::cout << "STEP 2 : " << listeTransitions[i].etatDepart.numero << std::endl;
+				std::cout << "Correspondance trouvee entre etat " << listeEtats[j].numero << " et " << listeTransitions[i].etatDepart.numero << std::endl;
+				listeEtats[j].transitions[i] = listeTransitions[i];
+			};
+		}
+	}
 	// Table de transitions
 	std::cout << "--ETAT |";
 	GetSymboles();

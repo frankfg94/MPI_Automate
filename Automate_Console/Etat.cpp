@@ -17,7 +17,6 @@
 
 	 Etat::Etat()
 	 {
-		 std::cout << "Etat cree" << std::endl;
 	 };
 
 	 void Etat::Afficher()
