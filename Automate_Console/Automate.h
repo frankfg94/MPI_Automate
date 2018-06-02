@@ -5,12 +5,15 @@
 #include <iostream>
 #ifndef _AUTOMATE_H
 #define _AUTOMATE_H
-#include "Etat.h"
 #include "Transition.h"
 
+class Etat;
 class Automate {
 
 private: 
+	
+
+public: 
 	char* listeSymboles;
 	bool estAsynchrone;
 	bool estDeterministe;
@@ -24,11 +27,11 @@ private:
 	Etat* listeEtatsFinaux;
 	Transition* listeTransitions;
 	int nbTransitions;
-
-public: 
-
+	void AfficherTransitions();
 
 	Automate(std::string texte);
+
+	void StockerTransitions();
 
 	void AfficherSymboles();
 

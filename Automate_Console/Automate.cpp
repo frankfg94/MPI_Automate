@@ -15,6 +15,15 @@
 
 
 
+void Automate::AfficherTransitions()
+{
+	std::cout << "Fonction AfficherTransitions()"  << std::endl;
+	for (int i = 0; i < nbTransitions; i++)
+	{
+		listeTransitions[i].Afficher();
+	}
+}
+
 Automate::Automate(std::string texte)
 {
 	std::cout << "Generation ..." << std::endl;
@@ -160,35 +169,39 @@ Automate::Automate(std::string texte)
 		i++;
 	}
 	std::cout << "\nAutomate cree avec succes !" << std::endl;
-
+	Transition lastTrans;
 	for (int j = 0; j < nbEtats; j++)
 	{
 		// pour chaque etat on genere un nombre de transitions
 		std::cout << "Etat : " << listeEtats[j].numero << std::endl;
+		int index = 0;
 		for (int i = 0; i < nbTransitions; i++)
 		{
-			this->listeEtats[j].transitions = new Transition[nbTransitions];
-			// on parcoure toutes les transitions a disposition
+			listeEtats[j].transitions = new Transition[nbTransitions];
+			// on parcourt toutes les transitions a disposition
 			// on regarde si une des transitions commence par l'état
 			// ici si le numero de l'état est égal au numero de la transition de de(part
 
 			if (listeEtats[j].numero == listeTransitions[i].etatDepart.numero)
 			{
-				std::cout << "Etat i   : " << listeEtats[j].numero << std::endl;
-				std::cout << "Symbole  : " << listeTransitions[i].symbole << std::endl;
-				std::cout << "Etat f   : " << listeTransitions[i].etatFinal.numero << std::endl;
-				std::cout << "Correspondance trouvee entre etat " << listeEtats[j].numero << " et " << listeTransitions[i].etatDepart.numero << std::endl;
-				listeEtats[j].transitions[i].etatDepart = listeEtats[j].numero;
-				listeEtats[j].transitions[i].etatFinal = listeTransitions[i].etatFinal.numero;
-				listeEtats[j].transitions[i] = listeTransitions[i];
-
-				// allocation dynamique
+				Transition t(listeEtats[j], listeTransitions[i].symbole, listeTransitions[i].etatFinal);
+				listeEtats[j].transitions[index] = t;
+				listeEtats[j].nbTransitions++;
+			    listeEtats[j].transitions[index].Afficher();
+				lastTrans = t;
+				index++;
 			};
 		}
+		std::cout << listeEtats[j].nbTransitions;
+		listeEtats[j].transitions = new Transition[listeEtats[j].nbTransitions];
+		for (int i = 0; i < listeEtats[j].nbTransitions; i++)
+		{
+			listeEtats[j].transitions[i] = lastTrans;
+		}
+
 	}
+	AfficherTransitions();
 	AfficherSymboles();
-
-
 
 
 
@@ -209,20 +222,12 @@ Automate::Automate(std::string texte)
 	int y = 0;
 	for (int i = 0; i < nbEtats; i++)
 	{
-		Transition* transitionsEtat = new Transition[nbTransitions];
-		transitionsEtat =listeEtats[i].transitions;
 
-		for (int j = 0; j < nbSymboles; j++)
+		for (int j = 0; j < nbTransitions; j++)
 		{
-			std::string caseTableTransition = "";
-			if (transitionsEtat[j].symbole == listeSymboles[nbSymboles])
-			{
-				caseTableTransition += transitionsEtat[j].etatFinal.numero;
-			}
-			std::cout << caseTableTransition << std::endl;
-			// tous les etats de sortie sont ajoutés dans le string
-			//contenuTableTrans[j][i] = caseTableTransition;
+
 		}
+
 		
 	}
 
@@ -261,6 +266,9 @@ Automate::Automate(std::string texte)
 		std::cout << "\n";
 	}
 }
+
+
+
 
 
 void Automate::AfficherSymboles()
