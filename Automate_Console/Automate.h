@@ -20,6 +20,8 @@ private:
 	int nbEtatsInitiaux;
 	int nbEtatsFinaux;
 	Etat* listeEtats;
+	Etat* listeEtatsInitiaux;
+	Etat* listeEtatsFinaux;
 	Transition* listeTransitions;
 	int nbTransitions;
 
@@ -29,6 +31,8 @@ public:
 	Automate(std::string texte);
 
 	void AfficherSymboles();
+
+	char* SupprimerSymbolesDupliques(char* listeDupliquee);
 
 	char* GetSymboles();
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Project Untitled
  */
 
@@ -7,12 +7,11 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <array>
 
 /**
  * Automate implementation
  */
-
-
 
 
 
@@ -22,6 +21,8 @@ Automate::Automate(std::string texte)
 	std::istringstream f(texte);
 	std::string line;
 	int i = 0;
+
+	// On demande à parcourir chaque ligne d'indice i du fichier texte
 	while (std::getline(f, line))
 	{
 		if (i == 0)
@@ -56,7 +57,7 @@ Automate::Automate(std::string texte)
 
 			// allocation dynamique du nombre d'états initial
 			std::string* strTab;
-			strTab = new std::string[30];
+			strTab = new std::string[nbEtats];
 
 			// On sépare à chaque espace les mots
 			for (short i = 0; i < line.length(); i++)
@@ -155,8 +156,6 @@ Automate::Automate(std::string texte)
 			}
 		}
 		
-
-
 		// on indique ensuite les etats qui sont initiaux et finaux
 		i++;
 	}
@@ -177,26 +176,90 @@ Automate::Automate(std::string texte)
 			{
 				std::cout << "Etat i   : " << listeEtats[j].numero << std::endl;
 				std::cout << "Symbole  : " << listeTransitions[i].symbole << std::endl;
-				std::cout << "Etat f   : " << listeTransitions[i].etatDepart.numero << std::endl;
+				std::cout << "Etat f   : " << listeTransitions[i].etatFinal.numero << std::endl;
 				std::cout << "Correspondance trouvee entre etat " << listeEtats[j].numero << " et " << listeTransitions[i].etatDepart.numero << std::endl;
+				listeEtats[j].transitions[i].etatDepart = listeEtats[j].numero;
+				listeEtats[j].transitions[i].etatFinal = listeTransitions[i].etatFinal.numero;
 				listeEtats[j].transitions[i] = listeTransitions[i];
 
 				// allocation dynamique
 			};
 		}
+	}
+	AfficherSymboles();
+
+
+
+
+
+	// On cree le contenu de la table de transitions
+	int nbColonnes = nbSymboles;
+	int nbLignes = nbEtats;
+	int espacement = 4;
+
+	// Initialisation dynamique, il faudra dé-allouer avec delete[]
+	std::string** contenuTableTrans = new std::string*[nbLignes];
+	for (int i = 0; i < nbColonnes; i++)
+	{
+		contenuTableTrans[i] = new std::string[nbColonnes];
+	}
+
+
+	int x = 0;
+	int y = 0;
+	for (int i = 0; i < nbEtats; i++)
+	{
+		Transition* transitionsEtat = new Transition[nbTransitions];
+		transitionsEtat =listeEtats[i].transitions;
+
+		for (int j = 0; j < nbSymboles; j++)
+		{
+			std::string caseTableTransition = "";
+			if (transitionsEtat[j].symbole == listeSymboles[nbSymboles])
+			{
+				caseTableTransition += transitionsEtat[j].etatFinal.numero;
+			}
+			std::cout << caseTableTransition << std::endl;
+			// tous les etats de sortie sont ajoutés dans le string
+			//contenuTableTrans[j][i] = caseTableTransition;
+		}
 		
 	}
 
-	AfficherSymboles();
-	
-	// Table de transitions
-	std::cout << "--ETAT |";
-	GetSymboles();
-	for (int i = 0; i < nbSymboles; i++)
+	//Assigner la table de transitions 
+
+
+	// AffichageTableTransitions
+	for (int x = 0; x < nbLignes; x++)
 	{
-		std::cout << " " << listeSymboles[i] << " ";
+		// Ligne x
+		std::cout << x <<" | ";
+		for (int y = 0; y < nbColonnes; y++)
+		{
+
+		    if (x == 0)
+			{
+				std::cout << listeSymboles[y];
+				for (int e = 0; e < espacement; e++)
+				{
+					std::cout << " ";
+				}
+			}
+			else
+			{
+				// Colonne y
+				//std::cout<< contenuTableTrans[x][y] << " " ;
+				std::cout << '*';
+				for (int e = 0; e < espacement; e++)
+				{
+					std::cout <<" ";
+				}
+			}
+		}
+
+		// ligne terminée, on retourne à la ligne
+		std::cout << "\n";
 	}
-	std::cout << "--" << listeEtats[0].transitions[0].etatFinal.numero << "----------" << std::endl;
 }
 
 
@@ -208,26 +271,14 @@ void Automate::AfficherSymboles()
 	{
 		preListe[k] = listeTransitions[k].symbole;
 	}
+	
 
-	// On enlève les valeurs excessives et on les stocke dans la liste des Symboles
-	listeSymboles = new char[nbSymboles];
+	/*size_t arraySize = sizeof(listeSymboles) / sizeof(*listeSymboles);
 
-	char dernierCaractereDifferent = preListe[0];
-	int posSymboleListe = 0;
+	std::sort(listeSymboles, listeSymboles + arraySize);
+*/
 
-	for (int k = 0; k < nbTransitions; k++)
-	{
-		// on ignore la reconnaissance des transitions epsilon
-		if (dernierCaractereDifferent != preListe[k] && dernierCaractereDifferent != '*')
-		{
-			dernierCaractereDifferent = preListe[k];
-			listeSymboles[posSymboleListe] = dernierCaractereDifferent;
-
-			// on a trouvé un caractère différent et on l'a placé dans le tableau, on incrémente donc le tableau des différents caractères pour passer à la case suivante
-			posSymboleListe++;
-		}
-
-	}
+	listeSymboles = SupprimerSymbolesDupliques(preListe);
 
 	std::cout << " --- Liste des symboles ---" << std::endl;
 	for (int l = 0; l < nbSymboles; l++)
@@ -235,25 +286,35 @@ void Automate::AfficherSymboles()
 		std::cout << l << " : " << listeSymboles[l] << std::endl;
 	}
 	std::cout << " ------------------------" << std::endl;;
+
+
+
 }
 
-char * Automate::GetSymboles()
+char* Automate::SupprimerSymbolesDupliques(char* listeDupliquee)
 {
-	listeSymboles = new char[nbSymboles];
-	int j = 0;
-	std::cout << "--------- GetSymboles() ----------" << std::endl;
-	for (int i = 0; i < nbTransitions; i++)
+	// On enlève les valeurs excessives et on les stocke dans la liste des Symboles
+	char* listeFiltree = new char[nbSymboles];
+
+	char dernierCaractereDifferent = listeDupliquee[0];
+	int posSymboleListe = 0;
+
+	for (int k = 0; k < nbTransitions; k++)
 	{
-			char symbActuel = listeTransitions[0].symbole;
-			if (listeTransitions[i].symbole != symbActuel)
-			{
-				listeSymboles[j] = listeTransitions[i].symbole;
-				symbActuel = listeSymboles[j];				
-				std::cout << listeTransitions[i].symbole << std::endl;
-			}
+		// on ignore la reconnaissance des transitions epsilon
+		if (dernierCaractereDifferent != listeDupliquee[k] && dernierCaractereDifferent != '*')
+		{
+			dernierCaractereDifferent = listeDupliquee[k];
+			listeFiltree[posSymboleListe] = dernierCaractereDifferent;
+
+			// on a trouvé un caractère différent et on l'a placé dans le tableau, on incrémente donc le tableau des différents caractères pour passer à la case suivante
+			posSymboleListe++;
+		}
 	}
-	return listeSymboles;
+	return listeFiltree;
 }
+
+
 
 void Automate::Minimiser() {
 
