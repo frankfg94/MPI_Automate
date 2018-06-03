@@ -16,6 +16,8 @@ public:
 	int nbTransitions;
     bool estSortie;
     bool estEntree;
+	bool estTerminal; 
+	bool estPoubelle;
 	Transition* transitions;
 	Etat(int i);
 	Etat();

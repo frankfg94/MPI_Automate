@@ -15,9 +15,10 @@ private:
 
 public: 
 	char* listeSymboles;
-	bool estAsynchrone;
+	bool estAsynchrone; // valide dès qu'une asterisque est détectée dans une transition
 	bool estDeterministe;
 	bool estComplet;
+	bool estStandard;
 	int nbEtats;
 	int nbSymboles;
 	int nbEtatsInitiaux;
@@ -31,13 +32,10 @@ public:
 
 	Automate(std::string texte);
 
-	void StockerTransitions();
-
 	void AfficherSymboles();
 
 	char* SupprimerSymbolesDupliques(char* listeDupliquee);
 
-	char* GetSymboles();
 
     void Minimiser();
     
@@ -55,7 +53,7 @@ public:
     
     void GetEtats();
     
-    void GetTableTransitions();
+    std::string** GetTableTransitions();
 private: 
    std::string Identifiant;
 };
