@@ -118,11 +118,13 @@
     <ClCompile Include="Automate.cpp" />
     <ClCompile Include="Etat.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TableTransition.cpp" />
     <ClCompile Include="Transition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Automate.h" />
     <ClInclude Include="Etat.h" />
+    <ClInclude Include="TableTransition.h" />
     <ClInclude Include="Transition.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

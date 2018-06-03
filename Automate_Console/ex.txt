@@ -9,3 +9,11 @@
 1*2
 2a2
 2b2
+
+
+E 1 2
+E 0 1
+
+
+Pour les etats initiaux
+on superpose pour chaque lettre les cases de la même colonne 

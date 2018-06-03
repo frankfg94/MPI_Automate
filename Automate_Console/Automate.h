@@ -36,6 +36,10 @@ public:
 
 	char* SupprimerSymbolesDupliques(char* listeDupliquee);
 
+	Etat GetEtat(int numero);
+	Etat GetEtat(std::string numero);
+
+	Transition* GetTransitionsPourSymbole(char symbole);
 
     void Minimiser();
     

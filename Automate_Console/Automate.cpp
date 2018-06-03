@@ -245,6 +245,7 @@ Automate::Automate(std::string texte)
 
 
 	GetTableTransitions(); // sait à partir de cet instant si l'automate est complet
+	Determiniser();
 	std::getchar();
 }
 
@@ -305,6 +306,43 @@ char* Automate::SupprimerSymbolesDupliques(char* listeDupliquee)
 	return listeFiltree;
 }
 
+Etat Automate::GetEtat(int numero)
+{
+	for (int i = 0; i < nbEtats; i++)
+	{
+		if (i == numero)
+		{
+			return listeEtats[i];
+		}
+	}
+}
+
+Etat Automate::GetEtat(std::string numero)
+{
+	for (int i = 0; i < nbEtats; i++)
+	{
+		if (i == std::stoi(numero))
+		{
+			return listeEtats[i];
+		}
+	}
+}
+
+Transition * Automate::GetTransitionsPourSymbole(char symbole)
+{
+	std::vector<Transition> trans;
+	for (int i = 0; i < nbTransitions; i++)
+	{
+		if (listeTransitions[i].symbole == symbole)
+		{
+			trans.push_back( listeTransitions[i]);
+			//trans.back().Afficher();
+ 		};
+	}
+	Transition* tab = &trans[0];
+	return tab;
+}
+
 void Automate::Minimiser() {
 
 }
@@ -330,13 +368,45 @@ void Automate::Afficher() {
 }
 
 void Automate::Determiniser() 
-{	
-	std::string ** tt = GetTableTransitions();
-	std::cout << "E ";
+{
+	GetTransitionsPourSymbole('a');
+	std::string premierEtat;
+	std::string** tt = GetTableTransitions();
+	std::cout << "	";
+	for (int i = 0; i < nbSymboles; i++)
+	{
+		std::cout<< listeSymboles[i] << "	";
+	}
+	std::cout << "\nE ";
+	Etat* etatsL1;
+	etatsL1 = new Etat[nbEtatsInitiaux];
 	for (int i = 0; i < nbEtatsInitiaux; i++)
 	{
 		std::cout << listeEtatsInitiaux[i].numero;
+		etatsL1[i] = listeEtatsInitiaux[i];
 	}
+
+	// Initialisation dynamique, il faudra dé-allouer avec delete[]
+	std::string** tDet = new std::string*[nbEtats];
+	for (int i = 0; i < nbSymboles; i++)
+		tDet[i] = new std::string[nbSymboles];
+	//pour la premiere ligne
+	std::cout << "  ";
+	for (int i = 0; i < nbSymboles; i++)
+	{
+		std::string s = "";
+		for (int j = 0; j < nbEtats; j++)
+		{
+			if(tt[j][i]!="-" &&  GetEtat(listeEtats[j].numero).estEntree)
+			s += tt[j][i];
+		}
+	
+		std::cout << s;
+
+		std::cout << "   ";
+	}
+	// pour le reste des lignes
+
 
 }
 
