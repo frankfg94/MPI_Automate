@@ -243,7 +243,6 @@ Automate::Automate(std::string texte)
 	AfficherTransitions();
 	AfficherSymboles();
 
-
 	GetTableTransitions(); // sait à partir de cet instant si l'automate est complet
 	Determiniser();
 	std::getchar();
@@ -262,6 +261,7 @@ void Automate::AfficherSymboles()
 		if (listeTransitions[k].symbole != '*')
 		{
 			preListe[index] = listeTransitions[k].symbole;
+			std::cout << preListe[index];
 			index++;
 		}
 	}
@@ -279,8 +279,7 @@ void Automate::AfficherSymboles()
 	{
 		std::cout << l << " : " << listeSymboles[l] << std::endl;
 	}
-	std::cout << " ------------------------" << std::endl;;
-
+	std::cout << " ------------------------" << std::endl;
 }
 
 char* Automate::SupprimerSymbolesDupliques(char* listeDupliquee)
@@ -289,9 +288,11 @@ char* Automate::SupprimerSymbolesDupliques(char* listeDupliquee)
 	char* listeFiltree = new char[nbSymboles];
 
 	char dernierCaractereDifferent = listeDupliquee[0];
-	int posSymboleListe = 0;
+	listeFiltree[0] = dernierCaractereDifferent;
+	int posSymboleListe = 1;
 
-	for (int k = 0; k < nbTransitions; k++)
+	std::cout << "Dernier caractere different : " << dernierCaractereDifferent << std::endl;
+	for (int k = 1; k < nbTransitions; k++)
 	{
 		// on ignore la reconnaissance des transitions epsilon
 		if (dernierCaractereDifferent != listeDupliquee[k] && dernierCaractereDifferent != '*')
@@ -302,6 +303,7 @@ char* Automate::SupprimerSymbolesDupliques(char* listeDupliquee)
 			// on a trouvé un caractère différent et on l'a placé dans le tableau, on incrémente donc le tableau des différents caractères pour passer à la case suivante
 			posSymboleListe++;
 		}
+
 	}
 	return listeFiltree;
 }

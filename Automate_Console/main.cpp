@@ -57,7 +57,7 @@ void ChargerFichier(string nom)
 
 void LancerMenu() 
 {
-	std::string nomFichier = "test";
+	std::string nomFichier = "#18";
 	int choix = 1;
 	do
 	{
