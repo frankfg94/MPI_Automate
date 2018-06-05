@@ -5,7 +5,7 @@
 
 #ifndef _ETAT_H
 #define _ETAT_H
-
+#include <vector>
 class Automate;
 class Transition;
 class Etat
@@ -18,7 +18,7 @@ public:
     bool estEntree;
 	bool estTerminal; 
 	bool estPoubelle;
-	Transition* transitions;
+	std::vector<Transition> transitions;
 	Etat(int i);
 	Etat();
 	void Afficher();

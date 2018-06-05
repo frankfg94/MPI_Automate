@@ -6,7 +6,7 @@
 #ifndef _AUTOMATE_H
 #define _AUTOMATE_H
 #include "Transition.h"
-
+#include <vector>
 class Etat;
 class Automate {
 
@@ -23,10 +23,10 @@ public:
 	int nbSymboles;
 	int nbEtatsInitiaux;
 	int nbEtatsFinaux;
-	Etat* listeEtats;
-	Etat* listeEtatsInitiaux;
-	Etat* listeEtatsFinaux;
-	Transition* listeTransitions;
+	std::vector <Etat> listeEtats;
+	std::vector <Etat> listeEtatsInitiaux;
+	std::vector <Etat> listeEtatsFinaux;
+	std::vector <Transition> listeTransitions;
 	int nbTransitions;
 	void AfficherTransitions();
 

@@ -1,0 +1,45 @@
+# depslib dependency file v1.0
+1528206239 source:d:\gillioen\documents\backup visual studio\visual studio 2017\projects\automate_console\automate_console\automate.cpp
+	"Automate.h"
+	<iostream>
+	<string>
+	<sstream>
+	<array>
+	<vector>
+	<stdio.h>
+	<cstdio>
+
+1528130053 d:\gillioen\documents\backup visual studio\visual studio 2017\projects\automate_console\automate_console\automate.h
+	<iostream>
+	"Transition.h"
+
+1527964360 d:\gillioen\documents\backup visual studio\visual studio 2017\projects\automate_console\automate_console\transition.h
+	<string>
+	"Etat.h"
+
+1528019660 d:\gillioen\documents\backup visual studio\visual studio 2017\projects\automate_console\automate_console\etat.h
+
+1528021176 source:d:\gillioen\documents\backup visual studio\visual studio 2017\projects\automate_console\automate_console\etat.cpp
+	"Etat.h"
+	"Automate.h"
+	<iostream>
+
+1528117499 source:d:\gillioen\documents\backup visual studio\visual studio 2017\projects\automate_console\automate_console\main.cpp
+	<iostream>
+	<cstdio>
+	<fstream>
+	<string>
+	"Automate.h"
+	"Transition.h"
+	"Etat.h"
+
+1528023241 source:d:\gillioen\documents\backup visual studio\visual studio 2017\projects\automate_console\automate_console\tabletransition.cpp
+	"TableTransition.h"
+
+1528023213 d:\gillioen\documents\backup visual studio\visual studio 2017\projects\automate_console\automate_console\tabletransition.h
+	<string>
+
+1527992354 source:d:\gillioen\documents\backup visual studio\visual studio 2017\projects\automate_console\automate_console\transition.cpp
+	"Transition.h"
+	<iostream>
+

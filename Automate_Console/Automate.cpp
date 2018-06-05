@@ -1,18 +1,11 @@
-/*
- * Project Untitled
- */
-
 
 #include "Automate.h"
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <array>
 #include <vector>
-
-/**
- * Automate implementation
- */
+#include <stdio.h>
+#include <cstdio>
 
 
 int ConvertStringToInt(std::string string)
@@ -22,8 +15,8 @@ int ConvertStringToInt(std::string string)
 	//approach one
 	std::istringstream(string) >> i; //i is 10 after this
 
-								//approach two
-	sscanf_s(string.c_str(), "%d", &i); //i is 10 after this
+									 //approach two
+	scanf(string.c_str(), "%d", &i); //i is 10 after this
 
 	return i;
 }
@@ -40,7 +33,7 @@ std::string ToString(const T& value)
 
 void Automate::AfficherTransitions()
 {
-	std::cout << "Fonction AfficherTransitions()"  << std::endl;
+	std::cout << "Fonction AfficherTransitions()" << std::endl;
 	for (int i = 0; i < nbTransitions; i++)
 	{
 		listeTransitions[i].Afficher();
@@ -109,21 +102,19 @@ Automate::Automate(std::string texte)
 				}
 				strTab[counter] += line[i];
 			}
-			listeEtatsInitiaux = new Etat[nbEtatsInitiaux];
 			for (int i = 0; i < nbEtatsInitiaux; i++)
 			{
 				numEtatInitial = ConvertStringToInt(strTab[i + 1]);
 				std::cout << "		>	Numero initial trouve : " + strTab[i + 1] << std::endl;
 				Etat e(ConvertStringToInt(strTab[i + 1]));
-				listeEtatsInitiaux[i] = e;
+				listeEtatsInitiaux.push_back(e);
 			}
 
 			// allocation dynamique puis création des différents états
-			listeEtats = new Etat[nbEtats];
 			for (int i = 0; i < nbEtats; i++)
 			{
 				Etat e(i);
-				this->listeEtats[i] = e;
+				listeEtats.push_back(e);
 			}
 			for (int i = 0; i < nbEtats; i++)
 			{
@@ -132,6 +123,10 @@ Automate::Automate(std::string texte)
 					if (listeEtatsInitiaux[j].numero == listeEtats[i].numero)
 					{
 						listeEtats[i].estEntree = true;
+					}
+					else
+					{
+						listeEtats[i].estEntree = false;
 					};
 				}
 			}
@@ -159,7 +154,6 @@ Automate::Automate(std::string texte)
 				}
 				strTab2[counter] += line[i];
 			}
-			listeEtatsFinaux = new Etat[nbEtatsFinaux];
 
 			for (int i = 0; i < nbEtatsFinaux; i++)
 			{
@@ -173,9 +167,13 @@ Automate::Automate(std::string texte)
 					{
 						listeEtats[i].estSortie = true;
 						listeEtats[i].estTerminal = true;
-						std::cout << "sortie" << std::endl;
-						listeEtatsFinaux[j] = listeEtats[i];
-					};
+					}
+					else
+					{
+						listeEtats[i].estSortie = false;
+						listeEtats[i].estTerminal = false;
+					}
+					listeEtatsFinaux.push_back(listeEtats[i]);
 				}
 			}
 			delete[] strTab2;
@@ -185,7 +183,6 @@ Automate::Automate(std::string texte)
 			std::string premierMot = line.substr(0, line.find(" "));
 			nbTransitions = ConvertStringToInt(premierMot);
 			std::cout << ">>	nombre transitions : " << nbTransitions << std::endl;
-			listeTransitions = new Transition[nbTransitions];
 		}
 		else if (i >= 5)
 		{
@@ -205,7 +202,7 @@ Automate::Automate(std::string texte)
 				Etat init(in);
 				Etat final(f);
 				Transition t(init, mot.substr(1, 1), final);
-				listeTransitions[i - 5] = t;
+				listeTransitions.push_back(t);
 				if (t.symbole == '*' && !estAsynchrone)
 				{
 					estAsynchrone = true;
@@ -216,7 +213,6 @@ Automate::Automate(std::string texte)
 		i++;
 	}
 	std::cout << "\nAutomate cree avec succes !" << std::endl;
-	std::vector<Transition> array;
 
 	AfficherTransitions();
 
@@ -227,24 +223,23 @@ Automate::Automate(std::string texte)
 		int index = 0;
 		for (int i = 0; i < nbTransitions; i++)
 		{
-			listeEtats[j].transitions = new Transition[nbTransitions];
+			//std::cout << "iter transition" << i << std::endl;
 			if (listeEtats[j].numero == listeTransitions[i].etatDepart.numero)
 			{
 				Transition t(listeEtats[j], listeTransitions[i].symbole, listeTransitions[i].etatFinal);
-				listeEtats[j].transitions[index] = t;
 				listeEtats[j].nbTransitions++;
 				//listeEtats[j].transitions[index].Afficher();
-				array.push_back(t);
-				index++;
+				listeEtats[j].transitions.push_back(t);
+				t.Afficher();
 			};
 		}
-		listeEtats[j].transitions = new Transition[listeEtats[j].nbTransitions];
+		/*		listeEtats[j].transitions = new Transition[listeEtats[j].nbTransitions];
 		for (int i = 0; i < listeEtats[j].nbTransitions; i++)
 		{
-			array[i].Afficher();
-			listeEtats[j].transitions[i] = array[i];
+		array[i].Afficher();
+		listeEtats[j].transitions[i] = array[i];
 		}
-		std::cout << listeEtats[j].nbTransitions;
+		std::cout << listeEtats[j].nbTransitions;*<  */
 	}
 
 
@@ -256,15 +251,15 @@ Automate::Automate(std::string texte)
 			if (listeTransitions[i].etatFinal.numero == listeEtatsInitiaux[0].numero)
 			{
 				estStandard = false;
-				std::cout << "(!)Cette transition revient sur l'Etat initial :"<<std::endl;
+				std::cout << "(!)Cette transition revient sur l'Etat initial :" << std::endl;
 				listeTransitions[i].Afficher();
 			}
 		}
 	}
 	if (estStandard)
-		std::cout << ">> Cet automate est Standard car il contient :\n 1 seul etat initial\n Aucune transition entrante sur cet etat initial"<<std::endl;
+		std::cout << ">> Cet automate est Standard car il contient :\n 1 seul etat initial\n Aucune transition entrante sur cet etat initial" << std::endl;
 	else
-		std::cout << ">> Cet automate n'est donc pas Standard" <<std::endl;
+		std::cout << ">> Cet automate n'est donc pas Standard" << std::endl;
 	//AfficherTransitions();
 	AfficherSymboles();
 
@@ -289,7 +284,7 @@ Automate::Automate(std::string texte)
 
 void Automate::AfficherSymboles()
 {
-	char* preListe = new char[ nbTransitions];
+	char* preListe = new char[nbTransitions];
 	// on rajoute tous les symboles
 	int index = 0;
 	for (int k = 0; k < nbTransitions; k++)
@@ -305,7 +300,7 @@ void Automate::AfficherSymboles()
 	/*size_t arraySize = sizeof(listeSymboles) / sizeof(*listeSymboles);
 
 	std::sort(listeSymboles, listeSymboles + arraySize);
-*/
+	*/
 
 	listeSymboles = SupprimerSymbolesDupliques(preListe);
 
@@ -371,9 +366,9 @@ Transition * Automate::GetTransitionsPourSymbole(char symbole)
 	{
 		if (listeTransitions[i].symbole == symbole)
 		{
-			trans.push_back( listeTransitions[i]);
+			trans.push_back(listeTransitions[i]);
 			//trans.back().Afficher();
- 		};
+		};
 	}
 	Transition* tab = &trans[0];
 	return tab;
@@ -424,7 +419,7 @@ void Automate::Determiniser()
 
 	for (int i = 0; i < nbSymboles; i++)
 	{
-		std::cout<< listeSymboles[i] << "	";
+		std::cout << listeSymboles[i] << "	";
 	}
 	std::cout << "\nE ";
 	Etat* etatsL1;
@@ -446,8 +441,8 @@ void Automate::Determiniser()
 		std::string s = "";
 		for (int j = 0; j < nbEtats; j++)
 		{
-			if(tt[j][i]!="-" &&  GetEtat(listeEtats[j].numero).estEntree)
-			s += tt[j][i];
+			if (tt[j][i] != "-" &&  GetEtat(listeEtats[j].numero).estEntree)
+				s += tt[j][i];
 		}
 		tDet[i][0] += s;
 
@@ -500,8 +495,8 @@ std::string** Automate::GetTableTransitions(bool complet = false)
 			}
 			if (s == "")
 			{
-				if(!complet)
-				s = '-';
+				if (!complet)
+					s = '-';
 				else
 				{
 					s = 'p';

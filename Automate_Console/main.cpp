@@ -1,18 +1,10 @@
-/**
- * Project Untitled
- */
 
-
-
-/**
- * Main implementation
- */
 
 #include <iostream>
 #include <cstdio>
 #include <fstream>
 #include <string>
-
+#include <cstring>
 #include "Automate.h"
 #include "Transition.h"
 #include "Etat.h"
@@ -24,7 +16,9 @@ string loadedText;
 // Permet de récupérer le texte d'un fichier pour conversion
 void ChargerFichier(string nom)
 {
-	ifstream myfile(nom + ".txt");
+	std::string s = nom;
+	s += ".txt";
+	std::ifstream myfile(s.c_str(), std::ios::in);
 
 	// eof signifie end of file, on regarde ainsi l'index de fin du fichier
 
@@ -32,11 +26,11 @@ void ChargerFichier(string nom)
 	{
 		if (myfile.peek() == std::ifstream::traits_type::eof())
 		{
-			cout << "Fichier existant mais vide\n" << endl;
+			cout << "Fichier   existant mais vide\n" << endl;
 			return;
 		}
 		string line;
-		cout << " \n-- Tentative chargement :" << nom << ".txt" <<"  -- \n" << endl;
+		cout << " \n-- Tentative chargement :" << nom << ".txt" << "  -- \n" << endl;
 		while (getline(myfile, line))
 		{
 
@@ -47,7 +41,7 @@ void ChargerFichier(string nom)
 
 		// on vérifie si le fichier n'est pas vide
 
-			cout << "\n --	Chargement OK	  -- \n" << endl;
+		cout << "\n --	Chargement OK	  -- \n" << endl;
 	}
 	else cout << "Impossible d'ouvrir le fichier\n" << endl;
 }
@@ -55,9 +49,9 @@ void ChargerFichier(string nom)
 // Lance le menu principal
 
 
-void LancerMenu() 
+void LancerMenu()
 {
-	std::string nomFichier = "#18";
+	std::string nomFichier = "test";
 	int choix = 1;
 	do
 	{
@@ -99,18 +93,18 @@ void LancerMenu()
 		}
 	} while (true);
 
-	
+
 }
 
 int main()
 {
-		LancerMenu();
+	LancerMenu();
 
 	// permet d'empêcher le programme de se fermer directement
 	std::getchar();
 }
 
-void LancerTests() 
+void LancerTests()
 {
 
 }
