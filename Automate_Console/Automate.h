@@ -51,13 +51,15 @@ public:
     
     void Standardiser();
     
+	void Completer();
+
     void Afficher();
     
     void Determiniser();
     
     void GetEtats();
     
-    std::string** GetTableTransitions();
+    std::string** GetTableTransitions(bool complet);
 private: 
    std::string Identifiant;
 };
